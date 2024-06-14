@@ -1,50 +1,78 @@
-# SWP_NJS1809
-DiamondKing - Diamond Selling Website
-This repository contains the source code for DiamondKing, a web application built using React and JavaScript to facilitate the buying and selling of diamonds online.
+const readmeContent = `
+# DiamondKing - Web bán kim cương
 
-Features
-Product Listings: Browse a wide range of diamonds categorized by type, size, and quality.
-User Authentication: Register and login securely to manage your profile and purchase history.
-Shopping Cart: Add diamonds to your cart for convenient purchasing.
-Payment Integration: Secure payment gateway for safe transactions.
-Order Tracking: Track the status of your orders from purchase to delivery.
-Responsive Design: Ensures a seamless experience across devices, from desktops to smartphones.
-Technologies Used
-Frontend: React, JavaScript, HTML, CSS
-Backend: (Mention backend technology if applicable, e.g., Node.js, Express, MongoDB)
-Authentication: (Specify authentication method, e.g., JWT, OAuth)
-Payment Gateway: (Specify payment gateway used, e.g., Stripe, PayPal)
-Installation
-To run this project locally, clone the repository:
+Đây là repository chứa mã nguồn cho DiamondKing, một ứng dụng web được xây dựng bằng React và JavaScript để hỗ trợ mua bán kim cương trực tuyến.
 
-bash
-Copy code
+## Tính năng
+
+- **Danh sách Sản phẩm:** Duyệt qua các loại kim cương đa dạng, phân loại theo loại, kích thước và chất lượng.
+- **Xác thực người dùng:** Đăng ký và đăng nhập một cách an toàn để quản lý hồ sơ và lịch sử mua hàng.
+- **Giỏ hàng:** Thêm kim cương vào giỏ hàng để mua hàng một cách tiện lợi.
+- **Tích hợp thanh toán:** Cổng thanh toán an toàn để giao dịch mua bán.
+- **Theo dõi đơn hàng:** Theo dõi trạng thái đơn hàng từ khi mua đến khi giao hàng.
+- **Thiết kế đáp ứng:** Đảm bảo trải nghiệm mượt mà trên mọi thiết bị, từ desktop đến smartphone.
+
+## Công nghệ sử dụng
+
+- **Frontend:** React, JavaScript, HTML, CSS
+- **Backend:** (Nếu có, ví dụ: Node.js, Express, MongoDB)
+- **Xác thực:** (Phương thức xác thực, ví dụ: JWT, OAuth)
+- **Cổng thanh toán:** (Cổng thanh toán sử dụng, ví dụ: Stripe, PayPal)
+
+## Cài đặt
+
+Để chạy dự án này trên máy cục bộ, clone repository:
+
+\`\`\`bash
 git clone https://github.com/your/repository.git
 cd repository-name
-Install dependencies:
+\`\`\`
 
-Copy code
+Cài đặt các thư viện cần thiết:
+
+\`\`\`bash
 npm install
-Run the application:
+\`\`\`
 
-sql
-Copy code
+Chạy ứng dụng:
+
+\`\`\`bash
 npm start
-Open http://localhost:3000 to view it in the browser.
+\`\`\`
 
-Deployment
-This project can be deployed using (mention deployment platform, e.g., AWS, Heroku). Ensure to set up environment variables for production deployments.
+Mở trình duyệt và truy cập [http://localhost:3000](http://localhost:3000) để xem ứng dụng.
 
-Contributing
-Contributions are welcome! Fork the repository and submit a pull request for any enhancements.
+## Triển khai
 
-License
-The code in this repository is licensed under the MIT License. See LICENSE for more details.
+Dự án có thể được triển khai bằng (nêu nền tảng triển khai, ví dụ: AWS, Heroku). Hãy thiết lập biến môi trường cho các triển khai sản xuất.
 
-Screenshots
+## Đóng góp
+
+Mọi đóng góp đều được hoan nghênh! Fork repository và gửi pull request cho bất kỳ cải tiến nào.
+
+## Giấy phép
+
+Mã nguồn trong repository này được cấp phép theo Giấy phép MIT. Xem chi tiết tại [LICENSE](./LICENSE).
+
+## Ảnh màn hình
 
 
-Authors
-Group 5 
-Acknowledgments
-Special thanks to ChiLQT for inspiration or assistance.
+
+![Homepage](./screenshots/homepage.png)
+![Chi tiết Sản phẩm](./screenshots/product-details.png)
+
+## Tác giả
+
+- [Group5 SWT](https://github.com/yourusername) - Nhà phát triển
+
+## Cảm ơn
+
+- Đặc biệt cảm ơn [ChiLQT](https://github.com/theirusername) vì những đóng góp và hỗ trợ.
+
+---
+
+Hãy chỉnh sửa README theo dự án cụ thể của bạn và phong cách thương hiệu riêng của bạn.
+`;
+
+// In case you want to use this content directly in a Node.js environment, you can console.log it
+console.log(readmeContent);
