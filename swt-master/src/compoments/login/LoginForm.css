@@ -1,0 +1,124 @@
+/* LoginForm.css */
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f2f2f2;
+  }
+  
+  .formLogin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    padding: 40px;
+  }
+  
+  .image-container {
+    width: 100px;
+    margin-bottom: 30px;
+  }
+  
+  .image-container img {
+    width: 100%;
+    border-radius: 50%;
+  }
+  
+  .form-container h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .form_input {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .form_input input {
+    width: 300px;
+    height: 40px;
+    padding: 0 20px 0 45px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  .form_input input:focus {
+    outline: none;
+    box-shadow: 0 0 2px 1px #007bff;
+  }
+  
+  .form_forgot {
+    margin-bottom: 20px;
+    text-align: right;
+  }
+  
+  .form_forgot a {
+    font-size: 14px;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .btn {
+    width: 300px;
+    height: 40px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: #0062cc;
+  }
+  
+  .btn_signup {
+    margin-top: 10px;
+  }
+  
+  .form_below {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .form_below p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .social-login {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .social-login a {
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  
+  .social-login button {
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .social-login button:hover {
+    text-decoration: underline;
+  }
+  
+  .icon_below {
+    font-size: 24px;
+    margin-left: 10px;
+  }
