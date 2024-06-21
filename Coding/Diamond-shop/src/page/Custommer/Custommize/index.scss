@@ -1,0 +1,203 @@
+.step_main {
+  padding: 20px 0px;
+  &_button_1 {
+    height: 80px;
+    width: 100%;
+    border-radius: 50px 0px 0px 50px;
+    border: 1px solid black;
+    p {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: left;
+    }
+    .title_main {
+      display: flex;
+      gap: 10px;
+      font-size: 15px;
+      a {
+        color: gray;
+        text-decoration: underline;
+        transform: 0.3s;
+        &:hover {
+          color: red;
+        }
+      }
+      span {
+        font-weight: bold;
+      }
+    }
+    .title_1 {
+      font-size: 35px;
+    }
+    .title_2 {
+      font-size: 25px;
+      font-weight: 400;
+    }
+    .body_step {
+      display: flex;
+      align-items: center;
+    }
+    transition: background-color 0.3s ease;
+    &:hover {
+      border: 1px solid black !important;
+      color: white !important;
+      background-color: #15393f !important;
+      cursor: pointer; // Thêm hiệu ứng con trỏ chuột khi hover
+    }
+    &.selected {
+      border: 1px solid black !important;
+      color: white !important;
+      background-color: #15393f !important;
+    }
+  }
+  &_button_2 {
+    height: 80px;
+    width: 100%;
+    border-radius: 0;
+    border: 1px solid black;
+    p {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: left;
+    }
+    .title_main {
+      display: flex;
+      gap: 10px;
+      font-size: 15px;
+      a {
+        color: gray;
+        text-decoration: underline;
+        transform: 0.3s;
+        &:hover {
+          color: red;
+        }
+      }
+      span {
+        font-weight: bold;
+      }
+    }
+    .title_1 {
+      font-size: 35px;
+    }
+    .title_2 {
+      font-size: 25px;
+      font-weight: 400;
+    }
+    .body_step {
+      display: flex;
+      align-items: center;
+    }
+    transition: background-color 0.3s ease;
+    &:hover {
+      border: 1px solid black !important;
+      color: white !important;
+      background-color: #15393f !important;
+      cursor: pointer; // Thêm hiệu ứng con trỏ chuột khi hover
+    }
+    &.selected2 {
+      border: 1px solid black !important;
+      color: white !important;
+      background-color: #15393f !important;
+    }
+  }
+  &_button_3 {
+    height: 80px;
+    width: 100%;
+    border-radius: 0px 50px 50px 0px;
+    border: 1px solid black;
+    p {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: left;
+    }
+    .title_main {
+      display: flex;
+      gap: 10px;
+      font-size: 15px;
+      a {
+        color: gray;
+        text-decoration: underline;
+        transform: 0.3s;
+        &:hover {
+          color: red;
+        }
+      }
+      span {
+        font-weight: bold;
+      }
+    }
+    .title_1 {
+      font-size: 35px;
+    }
+    .title_2 {
+      font-size: 25px;
+      font-weight: 400;
+    }
+    .body_step {
+      display: flex;
+      align-items: center;
+    }
+    transition: background-color 0.3s ease;
+    &:hover {
+      border: 1px solid black !important;
+      color: white !important;
+      background-color: #15393f !important;
+      cursor: pointer; // Thêm hiệu ứng con trỏ chuột khi hover
+    }
+    &.selected3 {
+      border: 1px solid black !important;
+      color: white !important;
+      background-color: #15393f !important;
+    }
+    &.error {
+      border: 1px solid black !important;
+      color: white !important;
+      background-color: rgb(168, 10, 10) !important;
+    }
+  }
+  & .ant-btn {
+    display: block;
+  }
+}
+
+//--------------------------------------
+.product-item {
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.product-item.selected {
+  background-color: #15393f;
+  color: white;
+}
+
+//---------------------------------------
+.product_complete {
+  display: flex;
+  align-items: center;
+  .icon_complete {
+    padding-right: 10px;
+  }
+}
+.price_complete {
+  padding: 5px 25px;
+  display: flex;
+  gap: 10px;
+  span {
+    font-weight: bold;
+    color: #15393f;
+  }
+  p {
+    color: gray;
+    text-decoration-line: underline;
+  }
+}
+.image_complete {
+  position: relative;
+  padding-left: 100px;
+  .diamond_complete {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}

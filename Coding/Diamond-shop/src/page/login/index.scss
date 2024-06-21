@@ -1,0 +1,17 @@
+.container-fluidd {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+}
+
+.container-fluidd > div {
+  padding: 20px; /* Tùy chỉnh padding nếu cần */
+  background-color: white; /* Tùy chỉnh màu nền */
+  /* Box shadow như kim cương */
+  box-shadow: 0 0 12px 0 rgba(96, 91, 91, 0.2),
+    0 20px 40px -5px rgba(134, 128, 128, 0.3), 0 0 0 10px #fff;
+  border-radius: 8px; /* Bo tròn góc */
+}

@@ -1,0 +1,203 @@
+.payment-container {
+  .pay_button {
+    padding: 30px 0;
+
+    &_comback {
+      background-color: black;
+    }
+
+    &.pay_button_comback {
+      width: 240px;
+      height: 40px;
+      margin-bottom: 20px;
+
+      &_icon {
+        font-size: 200px;
+      }
+    }
+  }
+
+  .pay_product_frame {
+    position: relative;
+    margin: 5px 0px;
+    padding: 10px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    background-color: #fffbfb;
+    & .pay_product_item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .pay_product_image_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .pay_product_info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    & .pay_product_name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    & .pay_product_code {
+      font-size: 14px;
+    }
+
+    & .pay_product_size_select {
+      margin-top: 10px;
+    }
+  }
+
+  .pay_product_price {
+    position: absolute;
+    bottom: 5px;
+    right: 7%;
+    font-size: large;
+  }
+  .pay_product_action {
+    .delete_product_button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  
+
+  .pay_main_col {
+    padding: 0 30px;
+  }
+
+  .pay_form_title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h2 {
+      margin-left: 10px;
+    }
+
+    &.pay_form_section {
+      margin-bottom: 40px;
+    }
+  }
+
+  .payment_button {
+    margin-top: 30px;
+  }
+  .pay_product_action {
+    // nút xóa
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
+  .payment_button {
+    background-color: black;
+    color: white;
+    padding: 1px 65px;
+    font-size: 25px;
+    cursor: pointer;
+    display: block;
+    margin: 5px 0 5px 100px;
+    text-align: center;
+  }
+
+  .payment_order {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px 40px;
+    .title {
+      padding: 10px 0px;
+      border-bottom: 1px dashed gray;
+    }
+    .pay_img {
+      padding: 10px 0px;
+    }
+    .pay_product {
+      border-bottom: 1px dashed gray;
+      padding: 10px 0px;
+    }
+    .pay_cata_product {
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    .pay_price_product {
+      display: flex;
+      left: 400px;
+      color: #e4bd7b;
+      font-weight: bold;
+      font-size: 23px;
+    }
+    .pay_product_detail {
+      .product1 {
+        display: flex;
+        gap: 10px;
+        padding: 20px 0px;
+        p {
+          font-size: 20px;
+          padding-bottom: 10px;
+        }
+        span {
+          font-style: italic;
+        }
+      }
+    }
+  }
+  .ant-select-selector {
+    border: none !important;
+    border-bottom: 1px solid gray !important;
+    border-radius: 0px !important;
+    padding: 0px !important;
+  }
+  .repay {
+    padding: 20px 0px;
+    font-size: 20px;
+    color: #605c5c;
+    border-bottom: 1px dashed gray;
+    font-style: italic;
+
+    .total_price {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      span {
+        font-weight: bold;
+      }
+    }
+  }
+  .repay2 {
+    padding: 20px 0px;
+    font-size: 20px;
+    color: #605c5c;
+    font-size: 25px;
+    font-style: italic;
+
+    .total {
+      display: flex;
+
+      justify-content: space-between;
+      padding-bottom: 10px;
+      span {
+        font-weight: bold;
+        color: red;
+        font-size: 25px;
+      }
+      p {
+        font-weight: bold;
+      }
+    }
+  }
+}
