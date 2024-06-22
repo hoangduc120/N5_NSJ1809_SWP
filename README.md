@@ -76,3 +76,29 @@ Hãy chỉnh sửa README theo dự án cụ thể của bạn và phong cách t
 
 // In case you want to use this content directly in a Node.js environment, you can console.log it
 console.log(readmeContent);
+
+
+
+## Bảng Phân Công Các Thành Viên
+
+## User Stories by Sprint
+
+| Sprint         | User Story (US) IDs                                                   |
+|----------------|-------------------------------------------------------------|
+| Sprint 1       |  |
+| Sprint 2       |  |
+| Sprint 3       |  |
+| Sprint 4       |  |
+
+## Member Assignments for Sprints 1
+
+| Member         | User Story (US) Assighed                                                |
+|----------------|-------------------------------------------------------------|
+| Hoàng Việt Đức       | UC 1 |
+| Hồ Công Duy       | UC 2 |
+| fullname       |  |
+| fullname       |  |
+
+
+
+
