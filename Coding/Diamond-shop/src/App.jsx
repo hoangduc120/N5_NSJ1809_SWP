@@ -12,9 +12,8 @@ import AllOrder from "./page/Admin/Order/All order";
 import Invoice from "./page/Admin/Order/Invoice";
 import NewProduct from "./page/Admin/Product/NewProduct";
 import ViewProduct from "./page/Admin/Product/ViewProduct";
-import NewOrder from "./page/Staff/New-Order/NewOrder";
+import NewOrder from "./page/Staff/New-Order";
 import ViewOrder from "./page/Staff/Order";
-import ViewProductS from "./page/Staff/Product";
 import ViewUser from "./page/Staff/View-User";
 import Warranty from "./page/Staff/Warranty";
 import StaffPage from "./page/Staff/staff-page";
@@ -58,11 +57,16 @@ import DiamondDetailss from "./page/Custommer/Diamond Details Cus";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import LoginPage from "./page/login";
 import NotFound from "./page/404";
+import ProfileAccount from "./page/Admin/Account/ViewAccountDetail/index2";
 
-import DetailProduct from "./page/Staff/Product/DetailProduct";
-import XemSanPham from "./page/Staff/Product/ViewProduct";
+import AccountDetail from "./page/Custommer/ThongTinTaiKhoan";
+
+import ViewOrderDetailsStaff from "./page/Staff/Order/ViewOrderDetail";
+import DetailNewOrder from "./page/Staff/New-Order/DetailNewOrder";
+import ProductDetailStaff from "./page/Staff/ProductStaff/ProductDetail";
+import ViewProductS from "./page/Staff/ProductStaff/allProduct";
+
 // import PageNewOrder from "./page/Staff/New-Order";
-
 
 const router = createBrowserRouter([
   {
@@ -165,6 +169,10 @@ const router = createBrowserRouter([
         path: "/lien-he",
         element: <LienHe />,
       },
+      {
+        path: "/thong-tin-chi-tiet/:userID",
+        element: <AccountDetail />,
+      },
     ],
   },
 
@@ -200,7 +208,7 @@ const router = createBrowserRouter([
         element: <AllOrder />,
       },
       {
-        path: "don-hang/all/order-detail/:idorder",
+        path: "don-hang/all/order-detail/:odID",
         element: <ViewOrderDetails />,
       },
       {
@@ -240,6 +248,10 @@ const router = createBrowserRouter([
         element: <ViewAccountDetail />,
       },
       {
+        path: "tai-khoan/xem-tat-ca-tai-khoan/chi-tiet-tai-khoan2/:id",
+        element: <ProfileAccount />,
+      },
+      {
         path: "tai-khoan/tao-tai-khoan",
         element: <NewAccount />,
       },
@@ -267,10 +279,14 @@ const router = createBrowserRouter([
         path: "/staff-page/don-hang-moi",
         element: <NewOrder />,
       },
-      
+
       {
         path: "/staff-page/don-hang",
         element: <ViewOrder />,
+      },
+      {
+        path: "/staff-page/don-hang/order-detail/:odID",
+        element: <ViewOrderDetailsStaff />,
       },
       {
         path: "/staff-page/tai-khoan",
@@ -281,16 +297,16 @@ const router = createBrowserRouter([
         element: <ViewProductS />,
       },
       {
+        path: "/staff-page/xem-san-pham/chi-tiet-san-pham/:productID",
+        element: <ProductDetailStaff />,
+      },
+      {
         path: "/staff-page/bao-hanh",
         element: <Warranty />,
       },
       {
         path: "/staff-page/chi-tiet-don-hang",
-        element: <DetailProduct />,
-      },
-      {
-        path: "/staff-page/xem-san-pham",
-        element: <XemSanPham />,
+        element: <DetailNewOrder />,
       },
     ],
   },

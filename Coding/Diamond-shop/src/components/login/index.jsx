@@ -28,7 +28,6 @@ function Login({ onLoginSuccess }) {
   const [form] = useForm();
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState("");
-
   const dispatch = useDispatch();
 
   const switchToSignUp = () => {
@@ -74,6 +73,7 @@ function Login({ onLoginSuccess }) {
       form.submit();
     }
   };
+  
 
   const handleRegister = async (values) => {
     try {

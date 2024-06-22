@@ -1,42 +1,36 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { CaretLeftFilled, DeleteOutlined } from "@ant-design/icons";
+import { CaretLeftFilled } from "@ant-design/icons";
 import {
   AutoComplete,
   Button,
   Col,
-  DatePicker,
   Form,
   Input,
   Radio,
+  Rate,
   Row,
   Select,
+  message,
+  notification,
 } from "antd";
-import { IoTicket } from "react-icons/io5";
+import { IoDiamondOutline, IoTicket } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import Relate from "../../../components/carousel/related";
 import Container from "../../../components/container/Container";
 import "./index.scss";
 import { getProvinces, getDistricts, getWards } from "vietnam-provinces";
-
+import {
+  deleteCart,
+  getCart,
+  submitOrder,
+} from "../../../../services/Uservices";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../../redux/features/counterSlice";
+import { GiBigDiamondRing } from "react-icons/gi";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import NotFound from "../../404";
 const { Option } = Select;
-const items = [
-  {
-    value: "1",
-    label: "1",
-  },
-  {
-    value: "2",
-    label: "2",
-  },
-  {
-    value: "3",
-    label: "3",
-  },
-  {
-    value: "4",
-    disabled: true,
-  },
-];
 
 function Cart() {
   const [form] = Form.useForm();
@@ -45,6 +39,50 @@ function Cart() {
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
+  const userr = useSelector(selectUser);
+  const [points, setPoints] = useState(0);
+  const [totalCartValue, setTotalCartValue] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [dataCart, setDataCart] = useState();
+  const [initialValues, setInitialValues] = useState({});
+  const fetchCart = async () => {
+    try {
+      console.log(userr.userID);
+      const res = await getCart(userr.userID);
+
+      // Update state with fetched data
+      setDataCart(res.data);
+      console.log(dataCart);
+      // Set initial form values
+      setInitialValues({
+        fullName: `${res.data.user.firstName} ${res.data.user.lastName}`,
+        phone: res.data.user.phone,
+        email: res.data.user.email,
+        province: res.data.user.address.split(",")[0],
+        district: res.data.user.address.split(",")[1],
+        ward: res.data.user.address.split(",")[2],
+        detailAddress: res.data.user.address.split(",")[3],
+        points: 0, // default value for points input
+      });
+
+      // Set form values with fetched data
+      form.setFieldsValue({
+        fullName: `${res.data.user.firstName} ${res.data.user.lastName}`,
+        phone: res.data.user.phone,
+        email: res.data.user.email,
+        province: res.data.user.address.split(",")[0],
+        district: res.data.user.address.split(",")[1],
+        ward: res.data.user.address.split(",")[2],
+        detailAddress: res.data.user.address.split(",")[3],
+      });
+    } catch (error) {
+      console.error("Failed to fetch cart data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
   useEffect(() => {
     const provincesList = getProvinces();
@@ -84,102 +122,209 @@ function Cart() {
   const onFinish = (values) => {
     console.log("Received values: ", values);
   };
+  const handleSubmit = async () => {
+    try {
+      // Lấy giá trị từ form
+      const formValues = await form.validateFields();
 
-  const renderProductItem = (
-    index,
-    name,
-    code,
-    imgDM,
-    nameDM,
-    codeDM,
-    price,
-    imageUrl
-  ) => (
-    <div className="cart_product_frame" key={index}>
-      <Row className="cart_product_item">
-        <button className="detele">
-          <DeleteOutlined /> Xóa
-        </button>
-        <div className="cart_detail">
-          <Col span={6} className="img_cart">
-            <img src={imageUrl} width={180} />
-            {imgDM && (
-              <img
-                src={imgDM}
-                style={{ display: imgDM === null ? "none" : "block" }}
-                className="cart_product_imgdm"
-                alt={nameDM}
-              />
-            )}
-          </Col>
-          <Col span={18} className="infor">
-            <div className="infor_detail">
-              <div style={{paddingBottom:"20px"}}>
-                <p>{name}</p>
-                <span>{code}</span>
-              </div>
-              <p>{nameDM}</p>
-              <span>{codeDM}</span>
-              <Select
-                defaultValue="Size"
-                style={{
-                  width: 70,
-                }}
-                options={items}
-              />
-            </div>
-          </Col>
+      // Tạo thông tin địa chỉ
+      const { province, district, ward, address, note } = formValues;
+
+      const selectedProvince = provinces.find((p) => p.code === province);
+      const selectedDistrict = districts.find((d) => d.code === district);
+      const selectedWard = wards.find((w) => w.code === ward);
+      const fullAddress = `${address}, ${
+        selectedWard ? selectedWard.name + ", " : ""
+      }${selectedDistrict ? selectedDistrict.name + ", " : ""}${
+        selectedProvince ? selectedProvince.name : ""
+      }`;
+
+      // Tạo thông tin đơn hàng
+      const orderInfo = {
+        userId: userr.userID,
+        fullName: formValues.fullName,
+        phone: formValues.phone,
+        email: formValues.email,
+        address: fullAddress,
+        note: note || "",
+        items: dataCart.items.map((item) => ({
+          productId:
+            item.productCustomize?.product.productID ||
+            item.diamondAdd?.diamondID,
+          quantity: item.quantity,
+          // Bạn thêm các thông tin khác của sản phẩm nếu cần thiết
+        })),
+        totalCost: totalCartValue,
+        pointsUsed: points,
+      };
+      console.log("Order information:", orderInfo);
+      // Gọi API đặt hàng với thông tin đơn hàng
+      const response = await submitOrder(orderInfo);
+      if (response.success) {
+        // Xử lý khi đặt hàng thành công, ví dụ: thông báo cho người dùng, làm trống giỏ hàng
+        message.success("Đặt hàng thành công!");
+        console.log("Order submitted successfully:", response.data);
+      }
+    } catch (error) {
+      // Xử lý khi có lỗi xảy ra, ví dụ: hiển thị thông báo lỗi
+      console.error("Failed to submit order:", error);
+      message.error("Đặt hàng không thành công!");
+    }
+  };
+
+  const renderProductItem = (item) => {
+    if (!item.productCustomize && !item.diamondAdd) {
+      return null; // Trả về null hoặc một JSX tương ứng nếu không có thông tin để hiển thị
+    }
+    const handleDeleteCart = async (cartItemId) => {
+      try {
+        await deleteCart(cartItemId);
+        message.success("Xóa thành công");
+        // Cập nhật lại dữ liệu giỏ hàng trên UI sau khi xóa thành công
+        fetchCart(); // Gọi hàm fetchDataCart() để cập nhật lại danh sách giỏ hàng
+      } catch (error) {
+        console.error("Failed to delete item from cart:", error);
+      }
+    };
+
+    return (
+      <Row className="staff_order_frame" key={item.cartItemId}>
+        <div>
+          <RiDeleteBin6Line
+            onClick={() => handleDeleteCart(item.cartItemId)}
+            size={15}
+            className="delete"
+          />
         </div>
+        <Col span={7} className="staff_order_left">
+          {item.productCustomize && item.productCustomize.product && (
+            <img
+              className="img_main"
+              src={item.productCustomize.product.productImages[0]?.imageUrl}
+              width={130}
+              style={{ marginLeft: "10px" }}
+            />
+          )}
+          {item.productCustomize && item.productCustomize.product && (
+            <div style={{ textAlign: "center" }}>
+              <Button className="button_custom">
+                Size: {item.productCustomize.size}
+              </Button>
+            </div>
+          )}
+          {(item.productCustomize?.diamond || item.diamondAdd) && (
+            <img
+              src={
+                item.productCustomize?.diamond?.image || item.diamondAdd?.image
+              }
+              className={`staff_order_kimg ${
+                item.productCustomize?.product
+                  ? "staff_order_kimg_kid"
+                  : "staff_order_kimg_main"
+              }`}
+              alt={
+                item.productCustomize?.diamond?.diamondName ||
+                item.diamondAdd?.diamondName
+              }
+            />
+          )}
+        </Col>
+
+        <Col span={17} className="staff_order_right">
+          {item.productCustomize && item.productCustomize.product && (
+            <div className="info_product">
+              <div>
+                <GiBigDiamondRing size={25} className="icon_order" />
+              </div>
+              <div className="info_sub">
+                <span>
+                  {item.productCustomize.product.productName}
+                  {" - "}
+                  {item.productCustomize.product.shapeDiamond}{" "}
+                  {item.productCustomize.product.dimensionsDiamond} ly
+                </span>
+                <p style={{ fontWeight: 400, fontSize: "13px" }}>
+                  {item.productCustomize.product.productID}
+                </p>
+                <Rate
+                  disabled
+                  defaultValue={item.productCustomize.product.rating}
+                  style={{
+                    fontSize: "13px",
+                  }}
+                />
+              </div>
+            </div>
+          )}
+          {(item.productCustomize?.diamond || item.diamondAdd) && (
+            <div className="info_diamond">
+              <div>
+                <IoDiamondOutline size={25} className="icon_order" />
+              </div>
+              <div className="info_sub">
+                <p>
+                  {item.productCustomize?.diamond?.diamondName ||
+                    item.diamondAdd?.diamondName}
+                </p>
+                <div style={{ fontWeight: 400, fontSize: "13px" }}>
+                  <span>
+                    Carat:{" "}
+                    {item.productCustomize?.diamond?.carat ||
+                      item.diamondAdd?.carat}
+                  </span>
+                  {" - "}
+                  <span>
+                    Tinh Khiết :
+                    {item.productCustomize?.diamond?.clarify ||
+                      item.diamondAdd?.clarify}
+                  </span>
+                  {" - "}
+                  <span>
+                    Cấp Màu :
+                    {item.productCustomize?.diamond?.colorLevel ||
+                      item.diamondAdd?.colorLevel}
+                  </span>
+                  {" - "}
+                  Cắt:{" "}
+                  <span>
+                    {item.productCustomize?.diamond?.cut ||
+                      item.diamondAdd?.cut}
+                  </span>
+                </div>
+                {(item.productCustomize?.diamond || item.diamondAdd) && (
+                  <div
+                    style={{
+                      fontWeight: 400,
+                      fontSize: "13px",
+                      paddingTop: "3px",
+                    }}
+                  >
+                    Kiểm định:{" "}
+                    <span style={{ color: "red" }}>
+                      {item.productCustomize?.diamond?.certificate ||
+                        item.diamondAdd?.certificate}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </Col>
         <Col span={24} className="price">
-          {" "}
-          <span>{price}</span>
+          <span style={{ textAlign: "right" }}>
+            {(
+              item.productCustomize?.totalPrice ||
+              item.diamondAdd?.totalPrice ||
+              item.totalPrice
+            ).toLocaleString("de-DE", {
+              maximumFractionDigits: 2,
+            })}{" "}
+            đ
+          </span>
         </Col>
       </Row>
-    </div>
-  );
-
-  const products = [
-    {
-      name: "NHẪN KIM CƯƠNG 18K SUPER VIP",
-      code: "NKC1241",
-      imgDM: "https://igg.vn/images/upload/34201813229polished-diamond.png",
-      nameDM: "KIm cuong ne",
-      codeDM: "0000000",
-      price: "510,000,000",
-      imageUrl:
-        "https://glosbejewelry.net/upload/image/Nhan-kim-cuong%20(10).jpg",
-    },
-    {
-      name: "NHẪN KIM CƯƠNG NỮ 18K VIP",
-      code: "NKC12341241",
-      imgDM: "",
-      nameDM: "",
-      codeDM: "",
-      price: "500,000,000",
-      imageUrl:
-        "https://glosbejewelry.net/upload/image/Nhan-kim-cuong%20(10).jpg",
-    },
-    {
-      name: "NHẪN KIM CƯƠNG NỮ 18K VIP",
-      code: "NKC12341241",
-      imgDM: "",
-      nameDM: "",
-      codeDM: "",
-      price: "500,000,000",
-      imageUrl:
-        "https://glosbejewelry.net/upload/image/Nhan-kim-cuong%20(10).jpg",
-    },
-    {
-      name: "NHẪN KIM CƯƠNG NỮ 18K VIP",
-      code: "NKC12341241",
-      imgDM: "",
-      nameDM: "",
-      codeDM: "",
-      price: "500,000,000",
-      imageUrl:
-        "https://glosbejewelry.net/upload/image/Nhan-kim-cuong%20(10).jpg",
-    },
-  ];
+    );
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -200,6 +345,56 @@ function Cart() {
     };
   }, []);
 
+  const handlePointsChange = (value) => {
+    const usedPoints = Math.min(value, dataCart.user.totalPoints); // Đặt giới hạn điểm sử dụng không vượt quá tổng điểm có
+    if (value > dataCart.user.totalPoints) {
+      // Hiển thị thông báo lỗi nếu nhập điểm vượt quá tổng điểm có
+      notification.error({
+        message: "Lỗi nhập điểm",
+        description:
+          "Số điểm bạn nhập vượt quá tổng điểm hiện có. Xin vui lòng nhập lại.",
+        duration: 3,
+      });
+      return; // Dừng hàm để không thực thi các lệnh tiếp theo
+    }
+
+    setPoints(usedPoints);
+
+    // Phần còn lại của hàm để tính toán giảm giá và cập nhật thành tiền...
+  };
+  useEffect(() => {
+    const calculateTotalCartValue = () => {
+      const totalValue = dataCart?.items.reduce(
+        (acc, item) => acc + item.totalPrice,
+        0
+      );
+      return totalValue;
+    };
+
+    const calculatedDiscount = points * 500000;
+
+    const totalValue = calculateTotalCartValue();
+
+    if (calculatedDiscount > totalValue) {
+      notification.error({
+        message: "Lỗi nhập điểm",
+        description:
+          "Giá trị giảm giá vượt quá tổng giá trị của giỏ hàng. Xin vui lòng nhập lại.",
+        duration: 3,
+      });
+
+      setDiscount(0); // Reset giá trị giảm giá về 0
+      setTotalCartValue(totalValue); // Cập nhật lại tổng giá trị giỏ hàng mà không trừ giảm giá
+    } else {
+      // Cập nhật giá trị giảm giá và tổng giá trị giỏ hàng sau khi đã trừ giảm giá
+      setDiscount(calculatedDiscount);
+      setTotalCartValue(totalValue - calculatedDiscount);
+    }
+  }, [points, dataCart?.items]);
+  if (!dataCart || !dataCart.items.length) {
+    return <NotFound />;
+  }
+
   return (
     <div className="cart">
       <Container>
@@ -209,6 +404,7 @@ function Cart() {
             <Link to="/">Tiếp tục mua sắm</Link>
           </Button>
         </div>
+
         <Row className="cart-main">
           <Col span={9} className="cart_main_col">
             <div className="cart_form">
@@ -216,10 +412,18 @@ function Cart() {
                 <Button shape="circle">
                   <p>1</p>
                 </Button>
-                <h2>Thông tin người mua</h2>
+                <h2 style={{ fontSize: "24px", margin: "5px 10px 5px 10px" }}>
+                  Thông tin người mua
+                </h2>
               </div>
 
-              <Form style={{ padding: "25px 30px" }}>
+              <Form
+                form={form}
+                name="userForm"
+                onFinish={onFinish}
+                initialValues={initialValues}
+                style={{ padding: "25px 30px" }}
+              >
                 <Form.Item>
                   <Radio.Group>
                     <Radio value="male"> Nam </Radio>
@@ -228,7 +432,7 @@ function Cart() {
                 </Form.Item>
 
                 <Form.Item
-                  name="name"
+                  name="fullName"
                   rules={[
                     { required: true, message: "Xin hãy nhập vào Họ và tên!" },
                   ]}
@@ -245,7 +449,7 @@ function Cart() {
                   rules={[
                     { required: true, message: "Xin hãy nhập vào SĐT!" },
                     {
-                      pattern: /^\d+$/,
+                      pattern: /^[0-9]{10}$/,
                       message: "Số điện thoại chỉ được nhập số!",
                     },
                   ]}
@@ -279,8 +483,8 @@ function Cart() {
                   </AutoComplete>
                 </Form.Item>
 
-                <Form.Item
-                  name="birthdate"
+                {/*<Form.Item
+                  name="yearOfBirth"
                   style={{ paddingTop: "10px" }}
                   rules={[
                     { required: true, message: "Xin hãy nhập vào Ngày sinh!" },
@@ -292,23 +496,10 @@ function Cart() {
                     style={{ width: "350px", height: "40px" }}
                     format="DD/MM/YYYY"
                   />
-                </Form.Item>
-              </Form>
+                </Form.Item>*/}
 
-              <div className="cart_form_title">
-                <Button shape="circle">
-                  <p>2</p>
-                </Button>
-                <h2>Địa chỉ</h2>
-              </div>
-
-              <Form
-                form={form}
-                onFinish={onFinish}
-                style={{ padding: "25px 30px" }}
-              >
                 <Form.Item
-                  name="city"
+                  name="province"
                   rules={[{ required: true, message: "Xin hãy chọn Tỉnh/TP!" }]}
                 >
                   <Select
@@ -414,30 +605,44 @@ function Cart() {
           <Col span={15}>
             <div className="cart_form_content" style={{ padding: "0px 20px" }}>
               <div className="cart_form_title">
-                <h2 style={{ fontSize: "24px", margin: "5px 10px 5px 10px" }}>
+                <Button shape="circle">
+                  <p>2</p>
+                </Button>
+                <h2
+                  style={{
+                    fontSize: "24px",
+                    margin: "5px 10px 5px 10px",
+                    fontWeight: "bold",
+                  }}
+                >
                   Thông tin giỏ hàng
                 </h2>
               </div>
               <div className="cart_product_list">
-                {products.map((product, index) =>
-                  renderProductItem(
-                    index,
-                    product.name,
-                    product.code,
-                    product.imgDM,
-                    product.nameDM,
-                    product.codeDM,
-                    product.price,
-                    product.imageUrl
-                  )
+                {dataCart?.items.map((item, index) =>
+                  renderProductItem(item, index)
                 )}
               </div>
             </div>
 
             <div className="cart_summary">
               <div className="cart_summary_item">
+                <span className="cart_summary_label">Điểm:</span>
+                <span className="cart_summary_value">
+                  {discount.toLocaleString("de-DE", {
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  ₫
+                </span>
+              </div>
+              <div className="cart_summary_item">
                 <span className="cart_summary_label">Tạm tính:</span>
-                <span className="cart_summary_value">1.010.000.000₫</span>
+                <span className="cart_summary_value">
+                  {totalCartValue.toLocaleString("de-DE", {
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  ₫
+                </span>
               </div>
               <div className="cart_summary_item">
                 <span className="cart_summary_label">Chi phí vận chuyển:</span>
@@ -455,11 +660,18 @@ function Cart() {
                 <div className="cart_points">
                   <span className="cart_points_label">
                     <IoTicket style={{ paddingRight: "5px" }} />
-                    Nhập điểm
+                    Nhập điểm:
+                    <span style={{ fontWeight: "300" }}>
+                      (1đ = 500.000 vnđ)
+                    </span>
                   </span>
                   <Input
+                    type="number"
+                    min={0}
+                    max={dataCart?.user.totalPoints}
+                    onChange={(e) => handlePointsChange(e.target.value)}
                     className="input"
-                    placeholder="Nhập điểm *"
+                    placeholder={dataCart?.user.totalPoints}
                     style={{ width: "150px", height: "30px" }}
                   />
                 </div>
@@ -467,7 +679,12 @@ function Cart() {
                   <span className="cart_total_price_label">
                     Thành tiền (2 sản phẩm):
                   </span>
-                  <span className="cart_total_price_value">1.100.000.000₫</span>
+                  <span className="cart_total_price_value">
+                    {totalCartValue.toLocaleString("de-DE", {
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                    ₫
+                  </span>
                 </div>
                 <div className="cart_vat_statement">
                   Giá tham khảo đã bao gồm VAT
@@ -476,8 +693,9 @@ function Cart() {
                   className="confirm_button"
                   type="primary"
                   style={{ width: "100%", height: "48px" }}
+                  onClick={handleSubmit}
                 >
-                  <Link to="/don-hang">Xác nhận</Link>
+                  Xác nhận
                 </Button>
               </div>
             </Form>
@@ -494,7 +712,7 @@ function Cart() {
           >
             Có thể bạn quan tâm
           </h2>
-          <Relate numberOfSlides={4} autoplay data="diamonds" />
+          <Relate numberOfSlides={4} autoplay dataCart="diamonds" />
         </div>
       </Container>
     </div>
