@@ -1,4 +1,6 @@
-const readmeContent = `
+
+![Diamond](https://github.com/hoangduc120/N5_NSJ1809_SWP/assets/155705690/465c6d90-12d0-47a2-a2a3-59b13a82c881)
+
 # DiamondKing - Web bán kim cương
 
 Đây là repository chứa mã nguồn cho DiamondKing, một ứng dụng web được xây dựng bằng React và JavaScript để hỗ trợ mua bán kim cương trực tuyến.
@@ -85,8 +87,8 @@ console.log(readmeContent);
 
 | Sprint         | User Story (US) IDs                                                   |
 |----------------|-------------------------------------------------------------|
-| Sprint 1       |  |
-| Sprint 2       |  |
+| Sprint 1       | UC1, UC2, UC3 |
+| Sprint 2       | UC4, UC5, UC6 |
 | Sprint 3       |  |
 | Sprint 4       |  |
 
@@ -96,8 +98,15 @@ console.log(readmeContent);
 |----------------|-------------------------------------------------------------|
 | Hoàng Việt Đức       | UC 1 |
 | Hồ Công Duy       | UC 2 |
-| fullname       |  |
-| fullname       |  |
+| Phạm Trung Nguyên       | UC 3  |
+
+## Member Assignments for Sprints 2
+
+| Member         | User Story (US) Assighed                                                |
+|----------------|-------------------------------------------------------------|
+| Hoàng Việt Đức       |  UC4, UC5, UC6  |
+| Hồ Công Duy       |  UC4, UC5, UC6  |
+| Phạm Trung Nguyên       |  UC4, UC5, UC6   |
 
 
 
